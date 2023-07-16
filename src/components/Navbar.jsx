@@ -4,7 +4,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 
 function Navbar() {
   return (
-    <>
+    <div>
       <div className="bg-light">
         <nav className="navbar navbar-light bg-light mx-auto w-75">
           <div className="container-fluid">
@@ -16,7 +16,7 @@ function Navbar() {
           </div>
         </nav>
       </div>
-    </>
+    </div>
   );
 }
 
