@@ -1,5 +1,6 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import React from "react";
+import { Link } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
 
 function Navbar() {
@@ -8,10 +9,16 @@ function Navbar() {
       <div className="bg-light">
         <nav className="navbar navbar-light bg-light mx-auto w-75">
           <div className="container-fluid">
-            <a className="navbar-brand">Navbar</a>
+            <Link to="/" className="navbar-brand">
+              Navbar
+            </Link>
             <form className="d-flex">
-              <a className="nav-link active mx-3">Create new post</a>
-              <a className="nav-link active">LogIn</a>
+              <Link to="addForm" className="nav-link active mx-3">
+                Create a New Post
+              </Link>
+              <Link to="login" className="nav-link  active">
+                LogIn
+              </Link>
             </form>
           </div>
         </nav>

@@ -1,4 +1,6 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
+// import { Link } from "react-router-dom";
 import Navbar from "../components/Navbar";
 
 function AddForm() {
@@ -7,6 +9,7 @@ function AddForm() {
     paraName: "",
     paraDate: "",
     content: "",
+    image: "",
   });
 
   const handleChange = (e) => {
@@ -16,16 +19,15 @@ function AddForm() {
     });
   };
 
-  const handleImageUpload = (itemId, image) => {
-    const updatedData = { ...formData };
-    updatedData[itemId].image = image;
+  const handleImageUpload = (image) => {
+    const updatedData = { ...formData, image };
     setFormData(updatedData);
-    localStorage.setItem("formData", JSON.stringify(updatedData));
   };
+
+  const navigate = useNavigate();
 
   const handleSubmit = (e) => {
     e.preventDefault();
-
     const existingData = localStorage.getItem("formData");
     let formDataArray = [];
 
@@ -33,24 +35,20 @@ function AddForm() {
       formDataArray = JSON.parse(existingData);
     }
 
-    formDataArray.push({ ...formData });
+    formDataArray.push({ ...formData, id: formData.heading });
 
     localStorage.setItem("formData", JSON.stringify(formDataArray));
-
-    // localStorage.setItem("formData", JSON.stringify(formData));
 
     setFormData({
       heading: "",
       paraName: "",
       paraDate: "",
       content: "",
+      image: "",
     });
 
-    // console.log(formData)
+    navigate("/");
   };
-
-  // const data=new formData()
-  // console.log(data)
 
   return (
     <div>
@@ -97,11 +95,15 @@ function AddForm() {
           />
           <input
             type="file"
+            // name="image"
+            // value={formData.image}
             onChange={(e) => {
               const file = e.target.files[0];
               const reader = new FileReader();
-              reader.onload = (event) =>
-                handleImageUpload(item.id, event.target.result);
+              reader.onload = (event) => {
+                const image = event.target.result;
+                handleImageUpload(image);
+              };
               reader.readAsDataURL(file);
             }}
           />
