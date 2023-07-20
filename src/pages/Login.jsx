@@ -1,34 +1,30 @@
 import React, { useState } from "react";
-import PropTypes from "prop-types";
-// import { useNavigate } from "react-router-dom";
+// import PropTypes from "prop-types";
+import { useNavigate } from "react-router-dom";
 import Navbar from "../components/Navbar";
+import { useAuth } from "../utils/auth";
 
-function Login({ onLogin }) {
-  const [name, setName] = useState("");
+function Login() {
+  const [userName, setUsername] = useState("");
   const [email, setEmail] = useState("");
 
-  // const navigate = useNavigate();
+  const auth = useAuth();
 
-  // const form =
-  // const formData = new FormData(form);
+  const navigate = useNavigate();
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    const form = e.target;
-    const formData = new FormData(form);
 
-    const userName = formData.get("name");
-    const userEmail = formData.get("email");
-
-    if (userName && userEmail) {
-      onLogin({ userName, userEmail });
-    }
-    // else {
-    //   alert("please enter username and password");
+    sessionStorage.setItem("username", userName);
+    sessionStorage.setItem("email", email);
+    // if (userName && email) {
+    //   navigate("/dashboard");
     // }
 
-    // navigate("/");
+    auth.login(userName, email);
+    navigate("/dashboard", { replace: true });
   };
+
   return (
     <div>
       <Navbar />
@@ -42,8 +38,8 @@ function Login({ onLogin }) {
               id="name"
               name="name"
               className="form-input"
-              value={name}
-              onChange={(e) => setName(e.target.value)}
+              value={userName}
+              onChange={(e) => setUsername(e.target.value)}
             />
           </label>
         </div>
@@ -54,6 +50,7 @@ function Login({ onLogin }) {
               type="email"
               className="form-input"
               id="email"
+              name="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
             />
@@ -67,8 +64,8 @@ function Login({ onLogin }) {
   );
 }
 
-Login.propTypes = {
-  onLogin: PropTypes.func.isRequired,
-};
+// Login.propTypes = {
+//   setUser: PropTypes.func.isRequired,
+// };
 
 export default Login;
