@@ -12,7 +12,7 @@ function Navbar() {
 
   const handleLogout = () => {
     auth.logout();
-    navigate("/login");
+    navigate("/");
   };
 
   return (
@@ -25,7 +25,7 @@ function Navbar() {
                 Navbar
               </Link>
             ) : (
-              <Link to="/login" className="navbar-brand">
+              <Link to="/" className="navbar-brand">
                 Navbar
               </Link>
             )}
@@ -35,12 +35,12 @@ function Navbar() {
                   Create a New Post
                 </Link>
               ) : (
-                <Link to="/login" className="nav-link active mx-3">
+                <Link to="/" className="nav-link active mx-3">
                   Create a New Post
                 </Link>
               )}
               {!auth.isLoggedIn ? (
-                <Link to="../login" className="nav-link  active">
+                <Link to="../" className="nav-link  active">
                   logIn
                 </Link>
               ) : (

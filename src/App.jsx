@@ -14,7 +14,7 @@ function App() {
     <AuthProvider>
       <BrowserRouter>
         <Routes>
-          <Route path="/login" exact element={<Login />} />
+          <Route path="/" exact element={<Login />} />
           <Route
             path="/dashboard"
             element={
@@ -24,14 +24,14 @@ function App() {
             }
           />
           <Route
-            path="addForm"
+            path="/addForm"
             element={
               <RequireAuth>
                 <AddForm />
               </RequireAuth>
             }
           />
-          <Route path="post" element={<Post />} />
+          <Route path="/post1" element={<Post />} />
           <Route path="*" element={<Error />} />
         </Routes>
       </BrowserRouter>
