@@ -6,7 +6,7 @@ import { useAuth } from "./auth";
 function RequireAuth({ children }) {
   const auth = useAuth();
 
-  if (!auth.user && auth.email) {
+  if (!auth.isLoggedIn) {
     return <Navigate to="login" />;
   }
   return children;

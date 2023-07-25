@@ -1,28 +1,76 @@
 import React, { useState } from "react";
-// import PropTypes from "prop-types";
 import { useNavigate } from "react-router-dom";
 import Navbar from "../components/Navbar";
-import { useAuth } from "../utils/auth";
+import { useAuth } from "../routing/auth";
 
 function Login() {
-  const [userName, setUsername] = useState("");
-  const [email, setEmail] = useState("");
+  const [formData, setFormData] = useState({
+    name: "",
+    email: "",
+    password: "",
+  });
+
+  const [errors, setErrors] = useState({
+    name: "",
+    email: "",
+    password: "",
+  });
 
   const auth = useAuth();
 
   const navigate = useNavigate();
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
+  // function to handle form input changes
+  const handleInputChange = (event) => {
+    const { name, value } = event.target;
+    setFormData({
+      ...formData,
+      [name]: value,
+    });
+  };
 
-    sessionStorage.setItem("username", userName);
-    sessionStorage.setItem("email", email);
-    // if (userName && email) {
-    //   navigate("/dashboard");
-    // }
+  // function to validate the form data
+  const validateForm = () => {
+    let isValid = true;
+    const newErrors = {};
 
-    auth.login(userName, email);
-    navigate("/dashboard", { replace: true });
+    if (formData.name.trim() === "") {
+      newErrors.name = "Name is required";
+      isValid = false;
+    }
+
+    if (!/\S+@\S+\.\S+/.test(formData.email)) {
+      newErrors.email = "Invalid email format";
+      isValid = false;
+    }
+
+    if (formData.password.length < 6) {
+      newErrors.password = "Password must be at least 6 characters long";
+      isValid = false;
+    }
+
+    setErrors(newErrors);
+    return isValid;
+  };
+
+  // Handle form submission
+  const handleSubmit = (event) => {
+    event.preventDefault();
+
+    if (validateForm()) {
+      // login actions
+      console.log("Form is valid. Submitting data:", formData);
+      auth.login();
+      navigate("/dashboard", { replace: true });
+
+      setFormData({
+        name: "",
+        email: "",
+        password: "",
+      });
+    } else {
+      console.log("Form has errors. Please fix them.");
+    }
   };
 
   return (
@@ -38,10 +86,11 @@ function Login() {
               id="name"
               name="name"
               className="form-input"
-              value={userName}
-              onChange={(e) => setUsername(e.target.value)}
+              value={formData.name}
+              onChange={handleInputChange}
             />
           </label>
+          {errors.name && <p className="error danger">{errors.name}</p>}
         </div>
         <div className="form-row">
           <label htmlFor="email" className="form-label">
@@ -51,10 +100,25 @@ function Login() {
               className="form-input"
               id="email"
               name="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
+              value={formData.email}
+              onChange={handleInputChange}
             />
           </label>
+          {errors.email && <p className="error">{errors.email}</p>}
+        </div>
+        <div className="form-row">
+          <label htmlFor="password" className="form-label">
+            Password
+            <input
+              type="password"
+              className="form-input"
+              id="password"
+              name="password"
+              value={formData.password}
+              onChange={handleInputChange}
+            />
+          </label>
+          {errors.password && <p className="error">{errors.password}</p>}
         </div>
         <button type="submit" className="btn btn-primary btn-block">
           Login
@@ -63,9 +127,5 @@ function Login() {
     </div>
   );
 }
-
-// Login.propTypes = {
-//   setUser: PropTypes.func.isRequired,
-// };
 
 export default Login;

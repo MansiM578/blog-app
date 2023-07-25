@@ -1,8 +1,8 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import React from "react";
-import { NavLink, useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
-import { useAuth } from "../utils/auth";
+import { useAuth } from "../routing/auth";
 
 function Navbar() {
   // const username = localStorage.getItem("username");
@@ -12,7 +12,7 @@ function Navbar() {
 
   const handleLogout = () => {
     auth.logout();
-    navigate("/");
+    navigate("/login");
   };
 
   return (
@@ -20,32 +20,35 @@ function Navbar() {
       <div className="bg-light">
         <nav className="navbar navbar-light bg-light mx-auto w-75">
           <div className="container-fluid">
-            {auth.user ? (
-              <NavLink to="/dashboard" className="navbar-brand">
+            {auth.isLoggedIn ? (
+              <Link to="/dashboard" className="navbar-brand">
                 Navbar
-              </NavLink>
+              </Link>
             ) : (
-              <NavLink to="/" className="navbar-brand">
+              <Link to="/login" className="navbar-brand">
                 Navbar
-              </NavLink>
+              </Link>
             )}
-            <form className="d-flex">
-              <NavLink to="addForm" className="nav-link active mx-3">
-                Create a New Post
-              </NavLink>
-              {!auth.user ? (
-                <NavLink to="/" className="nav-link  active">
-                  logIn
-                </NavLink>
+            <div className="d-flex">
+              {auth.isLoggedIn ? (
+                <Link to="../addForm" className="nav-link active mx-3">
+                  Create a New Post
+                </Link>
               ) : (
-                <>
-                  <NavLink>{auth.user}</NavLink>
-                  <button type="button" onClick={handleLogout}>
-                    Logout
-                  </button>
-                </>
+                <Link to="/login" className="nav-link active mx-3">
+                  Create a New Post
+                </Link>
               )}
-            </form>
+              {!auth.isLoggedIn ? (
+                <Link to="../login" className="nav-link  active">
+                  logIn
+                </Link>
+              ) : (
+                <button type="button" onClick={handleLogout}>
+                  Logout
+                </button>
+              )}
+            </div>
           </div>
         </nav>
       </div>
