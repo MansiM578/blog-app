@@ -8,6 +8,7 @@ import Login from "./pages/Login";
 import Error from "./pages/Error";
 import AuthProvider from "./routing/auth";
 import RequireAuth from "./routing/RequireAuth";
+import Dashboard from "./pages/Dashboard";
 
 function App() {
   return (
@@ -31,7 +32,8 @@ function App() {
               </RequireAuth>
             }
           />
-          <Route path="/post1" element={<Post />} />
+          <Route path="/edit/:id" element={<Post />} />
+          <Route path="/board" element={<Dashboard />} />
           <Route path="*" element={<Error />} />
         </Routes>
       </BrowserRouter>

@@ -169,7 +169,6 @@ export default function SignIn() {
               autoComplete="email"
               value={formData.email}
               onChange={handleInputChange}
-              autoFocus
             />
             {errors.email && <p className="error">{errors.email}</p>}
 
