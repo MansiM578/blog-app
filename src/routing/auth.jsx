@@ -15,7 +15,7 @@ const AuthProvider = ({ children }) => {
   };
 
   const logout = () => {
-    sessionStorage.setItem("token", false);
+    sessionStorage.setItem("token", "");
     setIsLoggedIn(false);
     console.log("sessinStorageRemoved");
   };

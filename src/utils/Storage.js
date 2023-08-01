@@ -14,15 +14,14 @@ export const removeSessionStorage = (key) => {
   sessionStorage.removeItems(key);
 };
 
-export const getLocalStorage = (key, result) => {
-  const data = localStorage.setItem(
+export const setLocalStorage = (key, result) => {
+  localStorage.setItem(
     key,
     typeof result === "object" ? JSON.stringify(result) : result
   );
-  return JSON.parse(data);
 };
 
-export const setLocalStorage = (key) => {
+export const getLocalStorage = (key) => {
   const data = localStorage.getItem(key);
   return JSON.stringify(data);
 };

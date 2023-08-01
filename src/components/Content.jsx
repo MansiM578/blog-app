@@ -7,6 +7,7 @@ import Container from "@mui/material/Container";
 
 import Paper from "@mui/material/Paper";
 import { useNavigate } from "react-router-dom";
+import { Box } from "@mui/material";
 import Title from "../pages/Title";
 
 function Content() {
@@ -37,66 +38,58 @@ function Content() {
   };
   return (
     <Container maxWidth="lg" sx={{ my: 4 }} spacing={3}>
-      <Grid container spacing={3}>
-        <Grid item xs={12} md={4} lg={4}>
-          {storedData.map((item) => (
-            <Paper
-              sx={{
-                p: 2,
-                display: "flex-center",
-                flexDirection: "column",
-                width: "100%",
-                height: "30vh",
-
-                my: 4,
-              }}
-              key={item.heading}
-            >
-              <img
-                src={item.image}
-                alt="Images"
-                style={{ width: "80%", objectFit: "cover", height: "26vh" }}
-              />
-            </Paper>
-          ))}
-        </Grid>
-
-        <Grid item xs={12} md={8} lg={8}>
+      <Grid sx={{ ms: "auto" }} spacing={-2}>
+        <Grid item>
           {storedData.map((item) => (
             <Paper
               sx={{
                 p: 2,
                 display: "flex",
-                flexDirection: "column",
-                height: "30vh",
                 my: 4,
               }}
               key={item.heading}
             >
-              <Typography component="p" variant="h5">
-                {item.heading}
-              </Typography>
+              <Grid item sx={{ width: "35%", my: "auto", marginLeft: "1%" }}>
+                <img
+                  src={item.image}
+                  alt="Images"
+                  style={{ width: "80%", objectFit: "cover", height: "26vh" }}
+                />
+              </Grid>
 
-              <Typography color="text.secondary" sx={{ flex: 1 }}>
-                {item.paraName}
-              </Typography>
-              <Typography color="text.secondary" sx={{ flex: 1 }}>
-                {item.paraDate}
-              </Typography>
-              <Title>{item.content}</Title>
-              <div>
-                <Button color="warning" onClick={() => handleDelete(item.id)}>
-                  Delete
-                </Button>
-                <Button
-                  color="secondary"
-                  onClick={() => {
-                    handleEdit(item.id);
-                  }}
-                >
-                  Edit
-                </Button>
-              </div>
+              <Box
+                sx={{
+                  p: 2,
+                  display: "flex",
+                  flexDirection: "column",
+                  my: 4,
+                }}
+              >
+                <Typography component="p" variant="h5">
+                  {item.heading}
+                </Typography>
+
+                <Typography color="text.secondary" sx={{ flex: 1 }}>
+                  {item.paraName}
+                </Typography>
+                <Typography color="text.secondary" sx={{ flex: 1 }}>
+                  {item.paraDate}
+                </Typography>
+                <Title>{item.content}</Title>
+                <div>
+                  <Button color="warning" onClick={() => handleDelete(item.id)}>
+                    Delete
+                  </Button>
+                  <Button
+                    color="secondary"
+                    onClick={() => {
+                      handleEdit(item.id);
+                    }}
+                  >
+                    Edit
+                  </Button>
+                </div>
+              </Box>
             </Paper>
           ))}
         </Grid>

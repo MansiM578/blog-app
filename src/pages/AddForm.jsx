@@ -1,9 +1,18 @@
 import React, { useState } from "react";
+import Grid from "@mui/material/Grid";
+import Typography from "@mui/material/Typography";
+import TextField from "@mui/material/TextField";
+import Box from "@mui/material/Box";
+import Paper from "@mui/material/Paper";
+import InputLabel from "@mui/material/InputLabel";
+import Input from "@mui/material/Input";
+import Button from "@mui/material/Button";
 import { useNavigate } from "react-router-dom";
-// import { Link } from "react-router-dom";
+import { v4 as uuidv4 } from "uuid";
 import Navbar from "../components/Navbar";
 
 function AddForm() {
+  const userId = uuidv4();
   const [formData, setFormData] = useState({
     heading: "",
     paraName: "",
@@ -48,12 +57,6 @@ function AddForm() {
     if (formData.paraDate.trim() === "") {
       newErrors.paraDate = "Date is required";
       isValid = false;
-    } else {
-      const dateRegex = /^\d{2}-\d{2}-\d{4}$/;
-      if (!dateRegex.test(formData.date)) {
-        newErrors.paraDate = "Invalid date format (DD-MM-YYYY)";
-        isValid = false;
-      }
     }
 
     setErrors(newErrors);
@@ -77,7 +80,7 @@ function AddForm() {
         formDataArray = JSON.parse(existingData);
       }
 
-      formDataArray.push({ ...formData, id: formData.heading });
+      formDataArray.push({ ...formData, id: userId });
 
       localStorage.setItem("formData", JSON.stringify(formDataArray));
 
@@ -90,15 +93,196 @@ function AddForm() {
       });
 
       navigate("/dashboard");
-    } else {
-      console.log("Form has errors. Please Fix then");
     }
+  };
+
+  const handleCancel = (e) => {
+    e.preventDefault();
+    navigate("/dashboard");
   };
 
   return (
     <div>
       <Navbar />
-      <div className="w-75 mx-auto">
+      <Paper
+        elevation={3}
+        sx={{ marginTop: "5%", marginRight: "15%", marginLeft: "15%" }}
+      >
+        <Box
+          component="form"
+          onSubmit={handleSubmit}
+          sx={{ padding: 5 }}
+          noValidate
+        >
+          <Typography variant="h6" gutterBottom sx={{ paddingBottom: 5 }}>
+            Edit Form
+          </Typography>
+
+          <Grid container spacing={3}>
+            <Grid item xs={12} sm={2}>
+              <InputLabel
+                sx={{
+                  display: "flex",
+                  justifyContent: "center",
+                  fontWeight: 700,
+                }}
+              >
+                Heading
+              </InputLabel>
+            </Grid>
+            <Grid item xs={12} sm={10}>
+              <TextField
+                label="Heading"
+                value={formData?.heading}
+                onChange={handleChange}
+                name="heading"
+                required
+                fullWidth
+              />
+              {errors.heading && (
+                <p className="error danger">{errors.heading}</p>
+              )}
+            </Grid>
+
+            <Grid item xs={12} sm={2}>
+              <InputLabel
+                sx={{
+                  display: "flex",
+                  justifyContent: "center",
+                  fontWeight: 700,
+                }}
+              >
+                Content
+              </InputLabel>
+            </Grid>
+            <Grid item xs={12} sm={10}>
+              <TextField
+                label="Content"
+                value={formData?.content}
+                onChange={handleChange}
+                name="content"
+                required
+                fullWidth
+                rows={4}
+              />
+              {errors.content && (
+                <p className="error danger">{errors.content}</p>
+              )}
+            </Grid>
+
+            <Grid item xs={12} sm={2}>
+              <InputLabel
+                sx={{
+                  display: "flex",
+                  justifyContent: "center",
+                  fontWeight: 700,
+                }}
+              >
+                Date
+              </InputLabel>
+            </Grid>
+            <Grid item xs={12} sm={10}>
+              <TextField
+                id="paraDate"
+                name="paraDate"
+                label="Date"
+                value={formData?.paraDate}
+                onChange={handleChange}
+                fullWidth
+                size="small"
+                variant="outlined"
+                required
+              />
+              {errors.paraDate && (
+                <p className="error danger">{errors.paraDate}</p>
+              )}
+            </Grid>
+
+            <Grid item xs={12} sm={2}>
+              <InputLabel
+                sx={{
+                  display: "flex",
+                  justifyContent: "center",
+                  fontWeight: 700,
+                }}
+              >
+                Author
+              </InputLabel>
+            </Grid>
+            <Grid item xs={12} sm={4}>
+              <TextField
+                id="paraName"
+                name="paraName"
+                label="Author"
+                value={formData?.paraName}
+                onChange={handleChange}
+                fullWidth
+                size="small"
+                variant="outlined"
+                required
+              />
+              {errors.paraName && (
+                <p className="error danger">{errors.paraName}</p>
+              )}
+            </Grid>
+            <Grid item xs={12} sm={2}>
+              <InputLabel
+                sx={{
+                  display: "flex",
+                  justifyContent: "center",
+                  fontWeight: 700,
+                }}
+              >
+                Img Upload
+              </InputLabel>
+            </Grid>
+            <Grid item xs={12} sm={4}>
+              <Input
+                type="file"
+                onChange={(e) => {
+                  const file = e.target.files[0];
+                  const reader = new FileReader();
+                  reader.onload = (event) => {
+                    const image = event.target.result;
+                    handleImageUpload(image);
+                  };
+                  reader.readAsDataURL(file);
+                }}
+              />
+            </Grid>
+            <Grid item xs={12} sm={6} />
+            <Grid item xs={12} sm={5} />
+            <Grid item xs={12} sm={4}>
+              <Button
+                variant="contained"
+                sx={{ color: "#e2f3fe" }}
+                type="submit"
+              >
+                Add Article
+              </Button>
+              <Button
+                variant="outlined"
+                sx={{
+                  color: "#e2f3fe",
+                  backgroundColor: "red",
+                  borderColor: "black",
+                  marginLeft: 2,
+                  ":hover": {
+                    bgcolor: "#e2f3fe",
+                    color: "red",
+                    borderColor: "black",
+                  },
+                }}
+                onClick={handleCancel}
+              >
+                Cancel
+              </Button>
+            </Grid>
+            <Grid item xs={12} sm={5} />
+          </Grid>
+        </Box>
+      </Paper>
+      {/* <div className="w-75 mx-auto">
         <form onSubmit={handleSubmit}>
           <input
             type="text"
@@ -121,7 +305,7 @@ function AddForm() {
           />
           {errors.paraName && <p className="error danger">{errors.paraName}</p>}
           <input
-            type="text"
+            type="date"
             id="paraData"
             name="paraDate"
             value={formData.paraDate}
@@ -160,7 +344,7 @@ function AddForm() {
             Add Article
           </button>
         </form>
-      </div>
+      </div> */}
     </div>
   );
 }

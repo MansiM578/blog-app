@@ -1,3 +1,4 @@
+/* eslint-disable no-plusplus */
 import * as React from "react";
 import { useState, useEffect } from "react";
 import Grid from "@mui/material/Grid";
@@ -8,24 +9,69 @@ import Paper from "@mui/material/Paper";
 import InputLabel from "@mui/material/InputLabel";
 import Input from "@mui/material/Input";
 import Button from "@mui/material/Button";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import Navbar from "../components/Navbar";
+import { setLocalStorage } from "../utils/Storage";
+import defaultImage from "../images/noImage.jpg";
 
-function post() {
+function Post() {
   const { id } = useParams();
-  console.log(id);
 
-  const [storedData, setStoredData] = useState({});
+  const [updatedFormData, setUpdatedFormData] = useState({});
+
+  const navigate = useNavigate();
+
+  const handleChange = (event) => {
+    const { name, value } = event.target;
+    setUpdatedFormData({ ...updatedFormData, [name]: value });
+  };
 
   useEffect(() => {
     const initialFormData = JSON.parse(localStorage.getItem("formData"));
-
     if (id) {
       const updatedItems = initialFormData.filter((obj) => obj.id === id)[0];
-      setStoredData(updatedItems);
+      setUpdatedFormData(updatedItems);
     }
   }, [id]);
-  console.log(storedData);
+
+  const handleImageUpload = (image) => {
+    const updatedData = { ...updatedFormData, image };
+    setUpdatedFormData(updatedData);
+  };
+
+  const handleImageRemove = () => {
+    const updatedData = { ...updatedFormData, image: "" };
+    setUpdatedFormData(updatedData);
+  };
+
+  const handleSave = (e) => {
+    e.preventDefault();
+    const initialFormData = JSON.parse(localStorage.getItem("formData"));
+    const dataIndex = initialFormData.findIndex(
+      (item) => item.id === updatedFormData.id
+    );
+    if (dataIndex !== -1) {
+      // Create a copy of the data array
+      const newData = [...initialFormData];
+      newData[dataIndex] = {
+        ...newData[dataIndex],
+        heading: updatedFormData.heading,
+        paraDate: updatedFormData.paraDate,
+        paraName: updatedFormData.paraName,
+        content: updatedFormData.content,
+        image: updatedFormData.image,
+      };
+
+      setLocalStorage("formData", newData);
+
+      navigate("/dashboard");
+    }
+  };
+
+  const handleCancel = (e) => {
+    e.preventDefault();
+    navigate("/dashboard");
+  };
 
   return (
     <>
@@ -33,11 +79,20 @@ function post() {
 
       <Paper
         elevation={3}
-        sx={{ marginTop: "1%", marginRight: "15%", marginLeft: "15%" }}
+        sx={{
+          marginTop: "3%",
+          marginRight: "15%",
+          marginLeft: "15%",
+          marginBottom: "3%",
+        }}
       >
-        {/* {storedData.map(() => ( */}
-        <Box component="form" sx={{ padding: 5 }} noValidate>
-          <Typography variant="h6" gutterBottom sx={{ paddingBottom: 5 }}>
+        <Box
+          component="form"
+          onSubmit={handleSave}
+          sx={{ padding: 5 }}
+          noValidate
+        >
+          <Typography variant="h5" gutterBottom sx={{ paddingBottom: 5 }}>
             Edit Form
           </Typography>
 
@@ -56,11 +111,11 @@ function post() {
             <Grid item xs={12} sm={10}>
               <TextField
                 label="Heading"
-                defaultValue={storedData?.heading}
+                value={updatedFormData?.heading || ""}
+                onChange={handleChange}
                 name="heading"
                 required
                 fullWidth
-                multiline={1}
               />
             </Grid>
 
@@ -78,9 +133,9 @@ function post() {
             <Grid item xs={12} sm={10}>
               <TextField
                 label="Content"
-                defaultValue={storedData?.content}
+                value={updatedFormData?.content || ""}
+                onChange={handleChange}
                 name="content"
-                multiline
                 required
                 fullWidth
                 rows={4}
@@ -100,15 +155,15 @@ function post() {
             </Grid>
             <Grid item xs={12} sm={10}>
               <TextField
-                id="date"
-                name="date"
+                id="paraDate"
+                name="paraDate"
                 label="Date"
-                defaultValue={storedData?.paraDate}
+                value={updatedFormData?.paraDate || ""}
+                onChange={handleChange}
                 fullWidth
                 size="small"
                 variant="outlined"
                 required
-                multiline={1}
               />
             </Grid>
 
@@ -125,15 +180,15 @@ function post() {
             </Grid>
             <Grid item xs={12} sm={4}>
               <TextField
-                id="author"
-                name="author"
+                id="paraName"
+                name="paraName"
                 label="Author"
-                defaultValue={storedData?.paraName}
+                value={updatedFormData?.paraName || ""}
+                onChange={handleChange}
                 fullWidth
                 size="small"
                 variant="outlined"
                 required
-                multiline={1}
               />
             </Grid>
             <Grid item xs={12} sm={2}>
@@ -148,22 +203,78 @@ function post() {
               </InputLabel>
             </Grid>
             <Grid item xs={12} sm={4}>
-              <Input type="file" />
+              {updatedFormData.image ? (
+                <>
+                  <img
+                    src={updatedFormData.image}
+                    alt="Selected Preview"
+                    style={{ width: "100%", marginTop: "10px" }}
+                  />
+                  <Button
+                    variant="outlined"
+                    color="secondary"
+                    onClick={handleImageRemove}
+                    sx={{ marginTop: "10px" }}
+                  >
+                    Remove Image
+                  </Button>
+                </>
+              ) : (
+                <>
+                  <img
+                    src={defaultImage}
+                    alt="No Images Selected"
+                    style={{ width: "70%", marginTop: "10px" }}
+                  />
+                  <Input
+                    type="file"
+                    onChange={(e) => {
+                      const file = e.target.files[0];
+                      const reader = new FileReader();
+                      reader.onload = (event) => {
+                        const image = event.target.result;
+                        handleImageUpload(image);
+                      };
+                      reader.readAsDataURL(file);
+                    }}
+                  />
+                </>
+              )}
             </Grid>
             <Grid item xs={12} sm={6} />
             <Grid item xs={12} sm={5} />
             <Grid item xs={12} sm={4}>
-              <Button variant="contained" sx={{ color: "#e2f3fe" }}>
+              <Button
+                variant="contained"
+                sx={{ color: "#e2f3fe" }}
+                type="submit"
+              >
                 Save
+              </Button>
+              <Button
+                variant="outlined"
+                sx={{
+                  color: "#e2f3fe",
+                  backgroundColor: "red",
+                  borderColor: "black",
+                  marginLeft: 2,
+                  ":hover": {
+                    bgcolor: "#e2f3fe",
+                    color: "red",
+                    borderColor: "black",
+                  },
+                }}
+                onClick={handleCancel}
+              >
+                Cancel
               </Button>
             </Grid>
             <Grid item xs={12} sm={5} />
           </Grid>
         </Box>
-        {/* ))} */}
       </Paper>
     </>
   );
 }
 
-export default post;
+export default Post;

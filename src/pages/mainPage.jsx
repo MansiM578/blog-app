@@ -8,7 +8,6 @@ function MainPage() {
     <>
       <Navbar />
       <Dashboard />
-      {/* <MainContent /> */}
     </>
   );
 }

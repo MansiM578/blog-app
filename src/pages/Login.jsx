@@ -1,5 +1,5 @@
 import * as React from "react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Navigate, useNavigate } from "react-router-dom";
 import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
@@ -54,10 +54,6 @@ export default function SignIn() {
 
   const navigate = useNavigate();
 
-  if (auth.isLoggedIn) {
-    return <Navigate to="/dashboard" />;
-  }
-
   // function to handle form input changes
   const handleInputChange = (event) => {
     const { name, value } = event.target;
@@ -111,6 +107,15 @@ export default function SignIn() {
     }
   };
 
+  useEffect(() => {
+    console.log(auth);
+
+    console.log("on mount");
+    return () => {
+      console.log("on unmount");
+    };
+  }, []);
+
   // const handleSubmit = (event) => {
   //   event.preventDefault();
   //   const data = new FormData(event.currentTarget);
@@ -119,8 +124,11 @@ export default function SignIn() {
   //     password: data.get("password"),
   //   });
   // };
-
-  return (
+  // if (auth.isLoggedIn) {
+  //   console.log("hello", auth.isLoggedIn);
+  //   return ;
+  // }
+  return !auth.isLoggedIn ? (
     <ThemeProvider theme={defaultTheme}>
       <Navbar />
       <Container component="main" maxWidth="xs">
@@ -211,5 +219,7 @@ export default function SignIn() {
         <Copyright sx={{ mt: 8, mb: 4 }} />
       </Container>
     </ThemeProvider>
+  ) : (
+    <Navigate to="/dashboard" />
   );
 }
