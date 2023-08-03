@@ -1,41 +1,16 @@
 import * as React from "react";
-import { useState, useEffect } from "react";
 import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
 import Grid from "@mui/material/Grid";
 import Container from "@mui/material/Container";
 
 import Paper from "@mui/material/Paper";
-import { useNavigate } from "react-router-dom";
 import { Box } from "@mui/material";
-import Title from "../pages/Title";
+import Title from "pages/Title";
+import useContent from "./useContent";
 
 function Content() {
-  const [storedData, setStoredData] = useState([]);
-
-  useEffect(() => {
-    const storedFormData = localStorage.getItem("formData");
-
-    if (storedFormData) {
-      setStoredData(JSON.parse(storedFormData));
-    }
-  }, []);
-
-  const navigate = useNavigate();
-
-  const handleDelete = (id) => {
-    const storedFormData = JSON.parse(localStorage.getItem("formData"));
-
-    const updatedItems = storedFormData.filter((obj) => obj.id !== id);
-
-    localStorage.setItem("formData", JSON.stringify(updatedItems));
-
-    setStoredData(updatedItems);
-  };
-
-  const handleEdit = (id) => {
-    navigate(`/edit/${id}`);
-  };
+  const [storedData, handleDelete, handleEdit] = useContent();
   return (
     <Container maxWidth="lg" sx={{ my: 4 }} spacing={3}>
       <Grid sx={{ ms: "auto" }} spacing={-2}>

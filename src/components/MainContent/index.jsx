@@ -1,26 +1,8 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
+import useMainContent from "./useMainContent";
 
 function MainContent() {
-  const [storedData, setStoredData] = useState([]);
-
-  useEffect(() => {
-    const storedFormData = localStorage.getItem("formData");
-
-    if (storedFormData) {
-      setStoredData(JSON.parse(storedFormData));
-    }
-  }, []);
-
-  const handleDelete = (id) => {
-    const storedFormData = JSON.parse(localStorage.getItem("formData"));
-
-    const updatedItems = storedFormData.filter((obj) => obj.id !== id);
-
-    localStorage.setItem("formData", JSON.stringify(updatedItems));
-
-    setStoredData(updatedItems);
-  };
-
+  const [storedData, handleDelete] = useMainContent();
   return (
     <div>
       <div className=" mx-auto w-75 mt-4">
