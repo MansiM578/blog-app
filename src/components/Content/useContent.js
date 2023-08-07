@@ -27,7 +27,9 @@ function useContent() {
 
     if (localStorage.getItem("inputData") !== null) {
       setStoredData(storedFormData);
-    } else {
+    } else if (localStorage.getItem("inputData").length === 0) {
+      navigate("/dashboard/noDataAdded");
+    else {
       navigate("/dashboard/noDataAdded");
     }
   }, []);
