@@ -9,6 +9,7 @@ import Error from "pages/Error";
 import AuthProvider from "routing/auth";
 import RequireAuth from "routing/RequireAuth";
 import Dashboard from "pages/Dashboard";
+import NoDataAdded from "pages/NoDataAdded";
 
 function App() {
   return (
@@ -32,6 +33,7 @@ function App() {
                 </RequireAuth>
               }
             />
+            <Route path="noDataAdded" element={<NoDataAdded />} />
             <Route path="edit/:id" element={<Post />} />
             <Route exact index element={<Dashboard />} />
           </Route>
