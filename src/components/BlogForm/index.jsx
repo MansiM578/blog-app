@@ -107,7 +107,7 @@ const Blogform = () => {
           {errors.paraDate && <p className="error danger">{errors.paraDate}</p>}
         </Grid>
 
-        <Grid item xs={12} sm={2}>
+        <Grid item xs={12} lg={2} md={2} sm={2}>
           <InputLabel
             sx={{
               display: "flex",
@@ -118,7 +118,7 @@ const Blogform = () => {
             Author
           </InputLabel>
         </Grid>
-        <Grid item xs={12} sm={4}>
+        <Grid item xs={12} lg={4} md={10} sm={10}>
           <TextField
             id="paraName"
             name="paraName"
@@ -132,7 +132,7 @@ const Blogform = () => {
           />
           {errors.paraName && <p className="error danger">{errors.paraName}</p>}
         </Grid>
-        <Grid item xs={12} sm={2}>
+        <Grid item xs={12} lg={2} md={2} sm={2}>
           <InputLabel
             sx={{
               display: "flex",
@@ -143,13 +143,13 @@ const Blogform = () => {
             Img Upload
           </InputLabel>
         </Grid>
-        <Grid item xs={12} sm={4}>
+        <Grid item xs={12} lg={4} md={10} sm={10}>
           {inputData.image ? (
             <>
               <img
                 src={inputData?.image}
                 alt="Selected Preview"
-                style={{ width: "100%", marginTop: "10px" }}
+                style={{ width: "60%", marginTop: "10px" }}
               />
               <Button
                 variant="outlined"
@@ -183,7 +183,7 @@ const Blogform = () => {
           )}
         </Grid>
 
-        <Grid item xs={12} sm={4}>
+        <Grid item xs={12} md={12} sm={12}>
           <Button variant="contained" sx={{ color: "#e2f3fe" }} type="submit">
             {id ? `Save` : `Add Article`}
           </Button>
@@ -205,7 +205,7 @@ const Blogform = () => {
             Cancel
           </Button>
         </Grid>
-        <Grid item xs={12} sm={5} />
+        {/* <Grid item xs={12} sm={5} /> */}
       </Grid>
     </Box>
   );

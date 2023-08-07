@@ -1,3 +1,4 @@
+/* eslint-disable array-callback-return */
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { getLocalStorage } from "utils/Storage";
@@ -22,10 +23,12 @@ function useContent() {
   };
 
   useEffect(() => {
-    const storedFormData = getLocalStorage("inputData") ?? [];
+    const storedFormData = getLocalStorage("inputData");
 
-    if (storedFormData) {
+    if (localStorage.getItem("inputData") !== null) {
       setStoredData(storedFormData);
+    } else {
+      navigate("/dashboard/noDataAdded");
     }
   }, []);
 

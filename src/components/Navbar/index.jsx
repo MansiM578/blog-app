@@ -100,17 +100,6 @@ function Navbar() {
                     </Link>
                   </Typography>
                 )}
-                {auth.isLoggedIn && (
-                  <Typography textAlign="center">
-                    <Link
-                      type="button"
-                      onClick={handleLogout}
-                      style={{ color: "white", textDecoration: "none" }}
-                    >
-                      Logout
-                    </Link>
-                  </Typography>
-                )}
               </MenuItem>
             </Menu>
           </Box>
@@ -153,20 +142,6 @@ function Navbar() {
                 </Link>
               </Button>
             )}
-            {auth.isLoggedIn && (
-              <Button
-                onClick={handleCloseNavMenu}
-                sx={{ my: 2, color: "white", display: "block" }}
-              >
-                <Link
-                  type="button"
-                  onClick={handleLogout}
-                  style={{ color: "white", textDecoration: "none" }}
-                >
-                  Logout
-                </Link>
-              </Button>
-            )}
           </Box>
 
           {auth.isLoggedIn && (
@@ -199,13 +174,7 @@ function Navbar() {
                     </Link>
                   </Typography>
                 </MenuItem>
-                <MenuItem onClick={handleCloseUserMenu}>
-                  <Typography textAlign="center">
-                    <Link type="button" style={{ textDecoration: "none" }}>
-                      Account
-                    </Link>
-                  </Typography>
-                </MenuItem>
+
                 <MenuItem onClick={handleCloseUserMenu}>
                   <Typography textAlign="center">
                     <Link

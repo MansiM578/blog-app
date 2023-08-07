@@ -7,7 +7,7 @@ import Container from "@mui/material/Container";
 import Paper from "@mui/material/Paper";
 import { Box } from "@mui/material";
 import Title from "pages/Title";
-import useContent from "./useContent";
+import useContent from "components/Content/useContent";
 
 function Content() {
   const [storedData, handleDelete, handleEdit] = useContent();
