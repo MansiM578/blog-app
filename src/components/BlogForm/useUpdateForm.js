@@ -8,10 +8,8 @@ function useUpdateForm() {
   const userId = uuidv4();
   const { id } = useParams();
 
-  const [updatedFormData, setUpdatedFormData] = useState({});
-
   const navigate = useNavigate();
-  const [formData, setFormData] = useState({
+  const [inputData, setInputData] = useState({
     heading: "",
     paraName: "",
     paraDate: "",
@@ -26,37 +24,39 @@ function useUpdateForm() {
     content: "",
   });
 
-  const handleChangeA = (event) => {
+  const handleChange = (event) => {
     const { name, value } = event.target;
-    setFormData({
-      ...formData,
+    setInputData({
+      ...inputData,
       [name]: value,
     });
   };
 
   // function to validate the form data
-  const validateFormA = () => {
+  const validateForm = () => {
     let isValid = true;
     const newErrors = {};
 
-    // moment(formData.paraDate).format("YYYY-MM-DD");
-    console.log(formData.paraDate);
-    const isValidDate = moment(formData.paraDate, "YYYY-MM-DD", true).isValid();
+    const isValidDate = moment(
+      inputData.paraDate,
+      "YYYY-MM-DD",
+      true
+    ).isValid();
 
-    if (formData.heading.trim() === "") {
+    if (inputData.heading.trim() === "") {
       newErrors.heading = "Heading is required";
       isValid = false;
     }
-    if (formData.paraName.trim() === "") {
+    if (inputData.paraName.trim() === "") {
       newErrors.paraName = "Name is required";
       isValid = false;
     }
-    if (formData.content.trim() === "") {
+    if (inputData.content.trim() === "") {
       newErrors.content = "Content of the article is required";
       isValid = false;
     }
 
-    if (formData.paraDate.trim() === "") {
+    if (inputData.paraDate.trim() === "") {
       newErrors.paraDate = "Date is required";
       isValid = false;
     } else if (!isValidDate) {
@@ -69,19 +69,19 @@ function useUpdateForm() {
 
   const handleSubmitA = (e) => {
     e.preventDefault();
-    if (validateFormA()) {
-      const existingData = localStorage.getItem("formData");
+    if (validateForm()) {
+      const existingData = localStorage.getItem("inputData");
       let formDataArray = [];
 
       if (existingData) {
         formDataArray = JSON.parse(existingData);
       }
 
-      formDataArray.push({ ...formData, id: userId });
+      formDataArray.push({ ...inputData, id: userId });
 
-      localStorage.setItem("formData", JSON.stringify(formDataArray));
+      localStorage.setItem("inputData", JSON.stringify(formDataArray));
 
-      setFormData({
+      setInputData({
         heading: "",
         paraName: "",
         paraDate: "",
@@ -93,86 +93,43 @@ function useUpdateForm() {
     }
   };
 
-  const handleChange = (event) => {
-    const { name, value } = event.target;
-    setUpdatedFormData({ ...updatedFormData, [name]: value });
-  };
-
-  useEffect(() => {
-    const initialFormData = JSON.parse(localStorage.getItem("formData"));
-    if (id) {
-      const updatedItems = initialFormData.filter((obj) => obj.id === id)[0];
-      setUpdatedFormData(updatedItems);
-    }
-  }, [id]);
-
   const handleImageUpload = (image) => {
-    const updatedData = { ...updatedFormData, image };
-    setUpdatedFormData(updatedData);
+    const updatedData = { ...inputData, image };
+    setInputData(updatedData);
   };
 
   const handleImageRemove = () => {
-    const updatedData = { ...updatedFormData, image: "" };
-    setUpdatedFormData(updatedData);
+    const updatedData = { ...inputData, image: "" };
+    setInputData(updatedData);
   };
-
-  // function to validate the form data
-  const validateForm = () => {
-    let isValid = true;
-    const newErrors = {};
-
-    // moment(formData.paraDate).format("YYYY-MM-DD");
-    console.log(updatedFormData.paraDate);
-    const isValidDate = moment(
-      updatedFormData.paraDate,
-      "YYYY-MM-DD",
-      true
-    ).isValid();
-
-    if (updatedFormData.heading.trim() === "") {
-      newErrors.heading = "Heading is required";
-      isValid = false;
+  useEffect(() => {
+    const initialFormData = JSON.parse(localStorage.getItem("inputData"));
+    if (id) {
+      const updatedItems = initialFormData.filter((obj) => obj.id === id)[0];
+      setInputData(updatedItems);
     }
-    if (updatedFormData.paraName.trim() === "") {
-      newErrors.paraName = "Name is required";
-      isValid = false;
-    }
-    if (updatedFormData.content.trim() === "") {
-      newErrors.content = "Content of the article is required";
-      isValid = false;
-    }
-
-    if (updatedFormData.paraDate.trim() === "") {
-      newErrors.paraDate = "Date is required";
-      isValid = false;
-    } else if (!isValidDate) {
-      newErrors.paraDate = "Invalid Date Format";
-      isValid = false;
-    }
-    setErrors(newErrors);
-    return isValid;
-  };
+  }, [id]);
 
   const handleSave = (e) => {
     e.preventDefault();
     if (validateForm()) {
-      const initialFormData = JSON.parse(localStorage.getItem("formData"));
+      const initialFormData = JSON.parse(localStorage.getItem("inputData"));
       const dataIndex = initialFormData.findIndex(
-        (item) => item.id === updatedFormData.id
+        (item) => item.id === inputData.id
       );
       if (dataIndex !== -1) {
         // Create a copy of the data array
         const newData = [...initialFormData];
         newData[dataIndex] = {
           ...newData[dataIndex],
-          heading: updatedFormData.heading,
-          paraDate: updatedFormData.paraDate,
-          paraName: updatedFormData.paraName,
-          content: updatedFormData.content,
-          image: updatedFormData.image,
+          heading: inputData.heading,
+          paraDate: inputData.paraDate,
+          paraName: inputData.paraName,
+          content: inputData.content,
+          image: inputData.image,
         };
 
-        setLocalStorage("formData", newData);
+        setLocalStorage("inputData", newData);
 
         navigate("/dashboard");
       }
@@ -185,9 +142,8 @@ function useUpdateForm() {
   };
 
   return {
-    formData,
+    inputData,
     errors,
-    handleChangeA,
     handleSubmitA,
     id,
     handleChange,
@@ -195,7 +151,6 @@ function useUpdateForm() {
     handleImageRemove,
     handleSave,
     handleCancel,
-    updatedFormData,
   };
 }
 

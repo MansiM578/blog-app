@@ -1,9 +1,9 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { useAuth } from "../../routing/auth";
+import { useAuth } from "routing/auth";
 
 function useLogin() {
-  const [formData, setFormData] = useState({
+  const [inputData, setInputData] = useState({
     name: "",
     email: "",
     password: "",
@@ -22,8 +22,8 @@ function useLogin() {
   // function to handle form input changes
   const handleInputChange = (event) => {
     const { name, value } = event.target;
-    setFormData({
-      ...formData,
+    setInputData({
+      ...inputData,
       [name]: value,
     });
   };
@@ -33,17 +33,17 @@ function useLogin() {
     let isValid = true;
     const newErrors = {};
 
-    if (formData.name.trim() === "") {
+    if (inputData.name.trim() === "") {
       newErrors.name = "Name is required";
       isValid = false;
     }
 
-    if (!/\S+@\S+\.\S+/.test(formData.email)) {
+    if (!/\S+@\S+\.\S+/.test(inputData.email)) {
       newErrors.email = "Invalid email format";
       isValid = false;
     }
 
-    if (formData.password.length < 6) {
+    if (inputData.password.length < 6) {
       newErrors.password = "Password must be at least 6 characters long";
       isValid = false;
     }
@@ -58,35 +58,23 @@ function useLogin() {
 
     if (validateForm()) {
       // login actions
-      console.log("Form is valid. Submitting data:", formData);
       auth.login();
       navigate("/dashboard", { replace: true });
 
-      setFormData({
+      setInputData({
         name: "",
         email: "",
         password: "",
       });
-    } else {
-      console.log("Form has errors. Please fix them.");
     }
   };
-
-  useEffect(() => {
-    console.log(auth);
-
-    console.log("on mount");
-    return () => {
-      console.log("on unmount");
-    };
-  }, []);
 
   return {
     errors,
     handleInputChange,
     handleSubmit,
-    formData,
-    setFormData,
+    inputData,
+    setInputData,
     auth,
   };
 }

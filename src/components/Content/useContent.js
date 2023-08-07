@@ -1,32 +1,33 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import { getLocalStorage } from "utils/Storage";
 
 function useContent() {
   const [storedData, setStoredData] = useState([]);
 
-  useEffect(() => {
-    const storedFormData = localStorage.getItem("formData");
-
-    if (storedFormData) {
-      setStoredData(JSON.parse(storedFormData));
-    }
-  }, []);
-
   const navigate = useNavigate();
 
   const handleDelete = (id) => {
-    const storedFormData = JSON.parse(localStorage.getItem("formData"));
+    const storedFormData = JSON.parse(localStorage.getItem("inputData"));
 
     const updatedItems = storedFormData.filter((obj) => obj.id !== id);
 
-    localStorage.setItem("formData", JSON.stringify(updatedItems));
+    localStorage.setItem("inputData", JSON.stringify(updatedItems));
 
     setStoredData(updatedItems);
   };
 
   const handleEdit = (id) => {
-    navigate(`/edit/${id}`);
+    navigate(`/dashboard/edit/${id}`);
   };
+
+  useEffect(() => {
+    const storedFormData = getLocalStorage("inputData") ?? [];
+
+    if (storedFormData) {
+      setStoredData(storedFormData);
+    }
+  }, []);
 
   return [storedData, handleDelete, handleEdit];
 }

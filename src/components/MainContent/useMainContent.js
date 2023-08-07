@@ -4,7 +4,7 @@ function useMainContent() {
   const [storedData, setStoredData] = useState([]);
 
   useEffect(() => {
-    const storedFormData = localStorage.getItem("formData");
+    const storedFormData = localStorage.getItem("inputData");
 
     if (storedFormData) {
       setStoredData(JSON.parse(storedFormData));
@@ -12,11 +12,11 @@ function useMainContent() {
   }, []);
 
   const handleDelete = (id) => {
-    const storedFormData = JSON.parse(localStorage.getItem("formData"));
+    const storedFormData = JSON.parse(localStorage.getItem("inputData"));
 
     const updatedItems = storedFormData.filter((obj) => obj.id !== id);
 
-    localStorage.setItem("formData", JSON.stringify(updatedItems));
+    localStorage.setItem("inputData", JSON.stringify(updatedItems));
 
     setStoredData(updatedItems);
   };

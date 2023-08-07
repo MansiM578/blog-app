@@ -13,11 +13,10 @@ import Button from "@mui/material/Button";
 import Tooltip from "@mui/material/Tooltip";
 import MenuItem from "@mui/material/MenuItem";
 import AdbIcon from "@mui/icons-material/Adb";
-// import "bootstrap/dist/css/bootstrap.min.css";
 import { Link } from "react-router-dom";
-import "./styles.css";
-import { useAuth } from "../../routing/auth";
-import useNavbar from "./useNavbar";
+import "components/Navbar/styles.css";
+import { useAuth } from "routing/auth";
+import useNavbar from "components/Navbar/useNavbar";
 
 function Navbar() {
   const auth = useAuth();
@@ -52,18 +51,12 @@ function Navbar() {
               textDecoration: "none",
             }}
           >
-            {auth.isLoggedIn ? (
-              <Link
-                to="/dashboard"
-                style={{ color: "white", textDecoration: "none" }}
-              >
-                My Blog APP
-              </Link>
-            ) : (
-              <Link to="/" style={{ color: "white", textDecoration: "none" }}>
-                My Blog APP
-              </Link>
-            )}
+            <Link
+              to={auth.isLoggedIn ? `/dashboard` : `/`}
+              style={{ color: "white", textDecoration: "none" }}
+            >
+              My Blog APP
+            </Link>
           </Typography>
 
           <Box sx={{ flexGrow: 1, display: { xs: "flex", md: "none" } }}>
@@ -96,20 +89,18 @@ function Navbar() {
               }}
             >
               <MenuItem onClick={handleCloseNavMenu}>
-                {auth.isLoggedIn ? (
+                {auth.isLoggedIn && (
                   <Typography textAlign="center">
                     <Link
-                      to="../addForm"
+                      to="/dashboard/addForm"
                       sx={{ mx: 2 }}
                       style={{ color: "black", textDecoration: "none" }}
                     >
                       Create a New Post
                     </Link>
                   </Typography>
-                ) : (
-                  ""
                 )}
-                {auth.isLoggedIn ? (
+                {auth.isLoggedIn && (
                   <Typography textAlign="center">
                     <Link
                       type="button"
@@ -119,8 +110,6 @@ function Navbar() {
                       Logout
                     </Link>
                   </Typography>
-                ) : (
-                  ""
                 )}
               </MenuItem>
             </Menu>
@@ -142,37 +131,29 @@ function Navbar() {
               textDecoration: "none",
             }}
           >
-            {auth.isLoggedIn ? (
-              <Link
-                to="/dashboard"
-                style={{ color: "white", textDecoration: "none" }}
-              >
-                My Blog APP
-              </Link>
-            ) : (
-              <Link to="/" style={{ color: "white", textDecoration: "none" }}>
-                My Blog APP
-              </Link>
-            )}
+            <Link
+              to={auth.isLoggedIn ? `/dashboard` : `/`}
+              style={{ color: "white", textDecoration: "none" }}
+            >
+              My Blog APP
+            </Link>
           </Typography>
           <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
-            {auth.isLoggedIn ? (
+            {auth.isLoggedIn && (
               <Button
                 onClick={handleCloseNavMenu}
                 sx={{ my: 2, color: "white", display: "block" }}
               >
                 <Link
-                  to="../addForm"
+                  to="/dashboard/addForm"
                   sx={{ mx: 2 }}
                   style={{ color: "white", textDecoration: "none" }}
                 >
                   Create a New Post
                 </Link>
               </Button>
-            ) : (
-              ""
             )}
-            {auth.isLoggedIn ? (
+            {auth.isLoggedIn && (
               <Button
                 onClick={handleCloseNavMenu}
                 sx={{ my: 2, color: "white", display: "block" }}
@@ -185,12 +166,10 @@ function Navbar() {
                   Logout
                 </Link>
               </Button>
-            ) : (
-              ""
             )}
           </Box>
 
-          {auth.isLoggedIn ? (
+          {auth.isLoggedIn && (
             <Box sx={{ flexGrow: 0 }}>
               <Tooltip title="Open settings">
                 <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
@@ -240,8 +219,6 @@ function Navbar() {
                 </MenuItem>
               </Menu>
             </Box>
-          ) : (
-            ""
           )}
         </Toolbar>
       </Container>

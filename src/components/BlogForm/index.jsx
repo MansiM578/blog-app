@@ -3,19 +3,16 @@ import Button from "@mui/material/Button";
 import Grid from "@mui/material/Grid";
 import Input from "@mui/material/Input";
 import InputLabel from "@mui/material/InputLabel";
-
 import TextField from "@mui/material/TextField";
 import Typography from "@mui/material/Typography";
 import * as React from "react";
 import defaultImage from "assets/images/noImage.jpg";
-import useUpdateForm from "./useUpdateForm";
+import useUpdateForm from "components/BlogForm/useUpdateForm";
 
 const Blogform = () => {
   const {
-    formData,
+    inputData,
     errors,
-    handleChangeA,
-
     handleSubmitA,
     id,
     handleChange,
@@ -23,7 +20,6 @@ const Blogform = () => {
     handleImageRemove,
     handleSave,
     handleCancel,
-    updatedFormData,
   } = useUpdateForm();
   return (
     <Box
@@ -32,15 +28,9 @@ const Blogform = () => {
       sx={{ padding: 5 }}
       noValidate
     >
-      {id ? (
-        <Typography variant="h5" gutterBottom sx={{ paddingBottom: 5 }}>
-          Edit Form
-        </Typography>
-      ) : (
-        <Typography variant="h5" gutterBottom sx={{ paddingBottom: 5 }}>
-          Add Form
-        </Typography>
-      )}
+      <Typography variant="h5" gutterBottom sx={{ paddingBottom: 5 }}>
+        {id ? `Edit Form` : `Add Form`}
+      </Typography>
 
       <Grid container spacing={3}>
         <Grid item xs={12} sm={2}>
@@ -57,8 +47,8 @@ const Blogform = () => {
         <Grid item xs={12} sm={10}>
           <TextField
             label="Heading"
-            value={id ? updatedFormData?.heading || "" : formData?.heading}
-            onChange={id ? handleChange : handleChangeA}
+            value={inputData?.heading}
+            onChange={handleChange}
             name="heading"
             required
             fullWidth
@@ -80,8 +70,8 @@ const Blogform = () => {
         <Grid item xs={12} sm={10}>
           <TextField
             label="Content"
-            value={id ? updatedFormData?.content || "" : formData.content}
-            onChange={id ? handleChange : handleChangeA}
+            value={inputData?.content}
+            onChange={handleChange}
             name="content"
             required
             fullWidth
@@ -106,17 +96,13 @@ const Blogform = () => {
             id="paraDate"
             name="paraDate"
             label="Date"
-            value={id ? updatedFormData?.paraDate || "" : formData?.paraDate}
+            value={inputData?.paraDate}
             type="date"
-            onChange={id ? handleChange : handleChangeA}
+            onChange={handleChange}
             fullWidth
             size="small"
             variant="outlined"
             required
-            // inputProps={{
-            //   max: formatDateForInput(new Date()), // Optional: Set the max date to prevent future dates selection
-            //   min: formatDateForInput("1900-01-01"), // Optional: Set the min date to restrict past dates
-            // }}
           />
           {errors.paraDate && <p className="error danger">{errors.paraDate}</p>}
         </Grid>
@@ -137,8 +123,8 @@ const Blogform = () => {
             id="paraName"
             name="paraName"
             label="Author"
-            value={id ? updatedFormData?.paraName || "" : formData.paraName}
-            onChange={id ? handleChange : handleChangeA}
+            value={inputData?.paraName}
+            onChange={handleChange}
             fullWidth
             size="small"
             variant="outlined"
@@ -158,10 +144,10 @@ const Blogform = () => {
           </InputLabel>
         </Grid>
         <Grid item xs={12} sm={4}>
-          {updatedFormData.image ? (
+          {inputData.image ? (
             <>
               <img
-                src={updatedFormData.image}
+                src={inputData?.image}
                 alt="Selected Preview"
                 style={{ width: "100%", marginTop: "10px" }}
               />
@@ -196,8 +182,7 @@ const Blogform = () => {
             </>
           )}
         </Grid>
-        <Grid item xs={12} sm={6} />
-        <Grid item xs={12} sm={5} />
+
         <Grid item xs={12} sm={4}>
           <Button variant="contained" sx={{ color: "#e2f3fe" }} type="submit">
             {id ? `Save` : `Add Article`}

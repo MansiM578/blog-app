@@ -11,13 +11,11 @@ const AuthProvider = ({ children }) => {
     sessionStorage.setItem("token", true);
 
     setIsLoggedIn(true);
-    console.log("sessinStorageSetted");
   };
 
   const logout = () => {
     sessionStorage.setItem("token", "");
     setIsLoggedIn(false);
-    console.log("sessinStorageRemoved");
   };
 
   return (

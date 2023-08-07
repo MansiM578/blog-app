@@ -1,27 +1,22 @@
 import * as React from "react";
-
 import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
 import CssBaseline from "@mui/material/CssBaseline";
 import TextField from "@mui/material/TextField";
 import { Navigate } from "react-router-dom";
-// import Grid from "@mui/material/Grid";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Box from "@mui/material/Box";
 import Container from "@mui/material/Container";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import Typography from "@mui/material/Typography";
-
 import Copyright from "components/Copyright";
 import Navbar from "components/Navbar";
-import useLogin from "./useLogin";
-
-// TODO remove, this demo shouldn't need to reset the theme.
+import useLogin from "pages/Login/useLogin";
 
 const defaultTheme = createTheme();
 
 export default function SignIn() {
-  const { errors, handleInputChange, handleSubmit, formData, auth } =
+  const { errors, handleInputChange, handleSubmit, inputData, auth } =
     useLogin();
 
   return !auth.isLoggedIn ? (
@@ -57,7 +52,7 @@ export default function SignIn() {
               label="User Name"
               name="name"
               autoComplete="name"
-              value={formData.name}
+              value={inputData.name}
               onChange={handleInputChange}
               autoFocus
             />
@@ -71,7 +66,7 @@ export default function SignIn() {
               label="Email Address"
               name="email"
               autoComplete="email"
-              value={formData.email}
+              value={inputData.email}
               onChange={handleInputChange}
             />
             {errors.email && <p className="error">{errors.email}</p>}
@@ -85,7 +80,7 @@ export default function SignIn() {
               type="password"
               id="password"
               autoComplete="current-password"
-              value={formData.password}
+              value={inputData.password}
               onChange={handleInputChange}
             />
             {errors.password && <p className="error">{errors.password}</p>}

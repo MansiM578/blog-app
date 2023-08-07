@@ -23,7 +23,7 @@ export const setLocalStorage = (key, result) => {
 
 export const getLocalStorage = (key) => {
   const data = localStorage.getItem(key);
-  return JSON.stringify(data);
+  return data ? JSON.parse(data) : data;
 };
 
 export const removeItem = (key) => {

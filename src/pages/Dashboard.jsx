@@ -1,7 +1,7 @@
 import * as React from "react";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import Box from "@mui/material/Box";
-import Content from "../components/Content";
+import Content from "components/Content";
 
 // TODO remove, this demo shouldn't need to reset the theme.
 const defaultTheme = createTheme();
