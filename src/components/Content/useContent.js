@@ -29,7 +29,7 @@ function useContent() {
       setStoredData(storedFormData);
     } else if (localStorage.getItem("inputData").length === 0) {
       navigate("/dashboard/noDataAdded");
-    else {
+    }else {
       navigate("/dashboard/noDataAdded");
     }
   }, []);
