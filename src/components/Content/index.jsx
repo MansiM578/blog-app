@@ -3,7 +3,6 @@ import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
 import Grid from "@mui/material/Grid";
 import Container from "@mui/material/Container";
-
 import Paper from "@mui/material/Paper";
 import { Box } from "@mui/material";
 import Title from "pages/Title";
