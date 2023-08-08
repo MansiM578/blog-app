@@ -96,7 +96,7 @@ function Navbar() {
                       sx={{ mx: 2 }}
                       style={{ color: "black", textDecoration: "none" }}
                     >
-                      Create a New Post
+                      Add New Post
                     </Link>
                   </Typography>
                 )}
@@ -138,7 +138,7 @@ function Navbar() {
                   sx={{ mx: 2 }}
                   style={{ color: "white", textDecoration: "none" }}
                 >
-                  Create a New Post
+                  Add New Post
                 </Link>
               </Button>
             )}
@@ -167,14 +167,6 @@ function Navbar() {
                 open={Boolean(anchorElUser)}
                 onClose={handleCloseUserMenu}
               >
-                <MenuItem onClick={handleCloseUserMenu}>
-                  <Typography textAlign="center">
-                    <Link type="button" style={{ textDecoration: "none" }}>
-                      Profile
-                    </Link>
-                  </Typography>
-                </MenuItem>
-
                 <MenuItem onClick={handleCloseUserMenu}>
                   <Typography textAlign="center">
                     <Link

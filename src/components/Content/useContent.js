@@ -1,7 +1,7 @@
 /* eslint-disable array-callback-return */
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { getLocalStorage } from "utils/Storage";
+import { getLocalStorage, setLocalStorage } from "utils/Storage";
 
 function useContent() {
   const [storedData, setStoredData] = useState([]);
@@ -9,13 +9,16 @@ function useContent() {
   const navigate = useNavigate();
 
   const handleDelete = (id) => {
-    const storedFormData = JSON.parse(localStorage.getItem("inputData"));
+    const storedFormData = getLocalStorage("inputData");
 
     const updatedItems = storedFormData.filter((obj) => obj.id !== id);
 
-    localStorage.setItem("inputData", JSON.stringify(updatedItems));
-
+    setLocalStorage("inputData", updatedItems);
     setStoredData(updatedItems);
+
+    if (updatedItems.length === 0) {
+      navigate("/dashboard/noDataAdded", { replace: true });
+    }
   };
 
   const handleEdit = (id) => {
@@ -25,12 +28,10 @@ function useContent() {
   useEffect(() => {
     const storedFormData = getLocalStorage("inputData");
 
-    if (localStorage.getItem("inputData") !== null) {
+    if (storedFormData === null || storedFormData.length === 0) {
+      navigate("/dashboard/noDataAdded", { replace: true });
+    } else {
       setStoredData(storedFormData);
-    } else if (localStorage.getItem("inputData").length === 0) {
-      navigate("/dashboard/noDataAdded");
-    }else {
-      navigate("/dashboard/noDataAdded");
     }
   }, []);
 
